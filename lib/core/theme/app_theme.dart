@@ -12,7 +12,6 @@ class AppTheme {
   static ThemeData get lightTheme => ThemeData(
     brightness: Brightness.light,
     useMaterial3: true,
-    fontFamily: 'Nunito',
 
     colorScheme: const ColorScheme.light(
       primary: AppColors.primary,
@@ -43,7 +42,7 @@ class AppTheme {
     ),
 
     // Card
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: AppColors.lightSurface,
       elevation: 0,
       shape: RoundedRectangleBorder(
@@ -131,16 +130,6 @@ class AppTheme {
       unselectedItemColor: AppColors.lightIcon,
       elevation: 0,
       type: BottomNavigationBarType.fixed,
-      selectedLabelStyle: TextStyle(
-        fontFamily: 'Nunito',
-        fontSize: 11,
-        fontWeight: FontWeight.w600,
-      ),
-      unselectedLabelStyle: TextStyle(
-        fontFamily: 'Nunito',
-        fontSize: 11,
-        fontWeight: FontWeight.w400,
-      ),
     ),
 
     // Divider
@@ -177,7 +166,6 @@ class AppTheme {
   static ThemeData get darkTheme => ThemeData(
     brightness: Brightness.dark,
     useMaterial3: true,
-    fontFamily: 'Nunito',
 
     colorScheme: const ColorScheme.dark(
       primary: AppColors.primary,
@@ -208,7 +196,7 @@ class AppTheme {
     ),
 
     // Card
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       color: AppColors.darkSurface,
       elevation: 0,
       shape: RoundedRectangleBorder(
@@ -296,16 +284,6 @@ class AppTheme {
       unselectedItemColor: AppColors.darkIcon,
       elevation: 0,
       type: BottomNavigationBarType.fixed,
-      selectedLabelStyle: TextStyle(
-        fontFamily: 'Nunito',
-        fontSize: 11,
-        fontWeight: FontWeight.w600,
-      ),
-      unselectedLabelStyle: TextStyle(
-        fontFamily: 'Nunito',
-        fontSize: 11,
-        fontWeight: FontWeight.w400,
-      ),
     ),
 
     // Divider

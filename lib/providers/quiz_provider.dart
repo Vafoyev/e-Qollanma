@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/models/quiz_model.dart';
-import '../data/models/result_model.dart';
 import '../data/repositories/quiz_repository.dart';
 
 // ── Quiz list ─────────────────────────────────────────────────────────────────
@@ -24,7 +23,7 @@ final quizSubmitProvider =
 FutureProvider.family<ResultModel, Map<String, dynamic>>(
         (ref, params) async {
       final quizId  = params['quizId'] as String;
-      final answers = params['answers'] as List<Map<String, String>>;
+      final answers = params['answers'] as List<AnswerModel>;
       return ref.watch(quizRepositoryProvider).submitQuiz(
         quizId:  quizId,
         answers: answers,

@@ -19,11 +19,11 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  // easy_localization init
-  await EasyLocalization.ensureInitialized();
-
   // SharedPreferences init
   await PrefsStorage.init();
+
+  // easy_localization init
+  await EasyLocalization.ensureInitialized();
 
   runApp(
     ProviderScope(

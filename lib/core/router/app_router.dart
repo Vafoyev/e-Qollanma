@@ -38,45 +38,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: AppRoutes.splash,
     debugLogDiagnostics: false,
-    redirect: (context, state) async {
-      final isLoggedIn   = await SecureStorage.getAccessToken() != null;
-      final onboardDone  = PrefsStorage.isOnboardDone();
-      final path         = state.matchedLocation;
-
-      // Splash — hech qanday redirect yo'q
-      if (path == AppRoutes.splash) return null;
-
-      // Til tanlanmagan bo'lsa
-      if (PrefsStorage.getSavedLocale() == null) {
-        return AppRoutes.language;
-      }
-
-      // Onboarding ko'rsatilmagan bo'lsa
-      if (!onboardDone &&
-          path != AppRoutes.intro &&
-          path != AppRoutes.authors &&
-          path != AppRoutes.curriculum) {
-        return AppRoutes.intro;
-      }
-
-      // Login kerak bo'lgan sahifalarga kirmoqchi bo'lsa
-      final protectedRoutes = [
-        AppRoutes.home,
-        '/video',
-        '/book',
-        '/quiz',
-      ];
-      final needsAuth = protectedRoutes.any((r) => path.startsWith(r));
-      if (needsAuth && !isLoggedIn) return AppRoutes.login;
-
-      // Login sahifasida bo'lib, allaqachon login qilgan bo'lsa
-      if ((path == AppRoutes.login || path == AppRoutes.register) &&
-          isLoggedIn) {
-        return AppRoutes.home;
-      }
-
-      return null;
-    },
     routes: [
       GoRoute(
         path: AppRoutes.splash,

@@ -79,3 +79,24 @@ class ResultModel {
 
   bool get isPassed => percentage >= 60;
 }
+
+// ── Answer ────────────────────────────────────────────────────────────────────
+class AnswerModel {
+  final String questionId;
+  final String selectedOption;
+
+  const AnswerModel({
+    required this.questionId,
+    required this.selectedOption,
+  });
+
+  factory AnswerModel.fromJson(Map<String, dynamic> json) => AnswerModel(
+    questionId:    json['question_id'] ?? '',
+    selectedOption: json['selected_option'] ?? '',
+  );
+
+  Map<String, dynamic> toJson() => {
+    'question_id': questionId,
+    'selected_option': selectedOption,
+  };
+}
