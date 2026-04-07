@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+
 import 'api_interceptor.dart';
 
-const String _baseUrl = 'https://your-api-domain.com/api/v1';
-// TODO: production da o'zgartir
+const String _baseUrl =
+    'https://e-drawguide-api.example.com/api/v1'; // TODO: Haqiqiy server domenini kiriting
 
 class DioClient {
   DioClient._();
@@ -33,8 +34,9 @@ class DioClient {
 
     // Interceptorlar — tartib muhim
     dio.interceptors.addAll([
-      ApiInterceptor(dio),       // 1. Token qo'shish / refresh
-      PrettyDioLogger(           // 2. Debug logging (faqat debug mode)
+      ApiInterceptor(dio), // 1. Token qo'shish / refresh
+      PrettyDioLogger(
+        // 2. Debug logging (faqat debug mode)
         requestHeader: true,
         requestBody: true,
         responseBody: true,
@@ -82,7 +84,7 @@ class ApiException implements Exception {
         );
       case DioExceptionType.badResponse:
         final data = e.response?.data;
-        final msg  = data?['message'] ?? 'Serverda xatolik yuz berdi.';
+        final msg = data?['message'] ?? 'Serverda xatolik yuz berdi.';
         final code = data?['errorCode'];
         return ApiException(
           message: msg,
