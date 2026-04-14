@@ -5,7 +5,6 @@ import 'package:gap/gap.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
-import '../../data/models/video_model.dart';
 import '../../providers/video_provider.dart';
 
 class VideoDetailScreen extends ConsumerStatefulWidget {

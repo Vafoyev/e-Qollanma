@@ -9,7 +9,6 @@ import 'package:iconsax/iconsax.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
-import '../../core/router/app_router.dart';
 import '../../data/models/video_model.dart';
 import '../../providers/video_provider.dart';
 
@@ -192,7 +191,7 @@ class _VideoCard extends StatelessWidget {
                         width: 52,
                         height: 52,
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.9),
+                          color: AppColors.primary.withValues(alpha: 0.9),
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(

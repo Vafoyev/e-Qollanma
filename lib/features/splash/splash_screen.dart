@@ -7,7 +7,7 @@ import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
 import '../../core/router/app_router.dart';
 import '../../core/storage/prefs_storage.dart';
-import '../../core/storage/secure_storage.dart';
+import '../../providers/auth_provider.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -31,21 +31,35 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
   Future<void> _navigateAfterDelay() async {
     try {
-      // Wait for splash screen
-      await Future.delayed(const Duration(milliseconds: 3000));
-      
+      // 1. Splash animatsiyasi uchun 2.5s kutish
+      await Future.delayed(const Duration(milliseconds: 2500));
       if (!mounted) return;
 
-      // Navigate to language screen (first time user)
-      // This is the safest default - users can proceed from there
-      if (mounted) {
+      // 2. Auth holatini tekshirish
+      final auth = ref.read(authProvider);
+      
+      // 3. Til tanlanganligini tekshirish
+      final locale = PrefsStorage.getSavedLocale();
+      if (locale == null) {
         context.go(AppRoutes.language);
+        return;
+      }
+
+      // 4. Onboarding tugatilganligini tekshirish
+      if (!PrefsStorage.isOnboardDone()) {
+        context.go(AppRoutes.intro);
+        return;
+      }
+
+      // 5. Login holatiga qarab yo'naltirish
+      if (auth.isLoggedIn) {
+        context.go(AppRoutes.home);
+      } else {
+        context.go(AppRoutes.login);
       }
     } catch (e) {
-      print('Splash navigation error: $e');
-      if (mounted) {
-        context.go(AppRoutes.language);
-      }
+      debugPrint('Splash navigation error: $e');
+      if (mounted) context.go(AppRoutes.language);
     }
   }
 
@@ -131,7 +145,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                 height: 24,
                 child: CircularProgressIndicator(
                   strokeWidth: 2.5,
-                  color: AppColors.primary.withOpacity(0.6),
+                  color: AppColors.primary.withValues(alpha: 0.6),
                 ),
               ),
             ),

@@ -14,8 +14,6 @@ import '../../features/videos/video_detail_screen.dart';
 import '../../features/library/book_detail_screen.dart';
 import '../../features/quiz/quiz_screen.dart';
 import '../../features/quiz/quiz_result_screen.dart';
-import '../storage/prefs_storage.dart';
-import '../storage/secure_storage.dart';
 
 // ── Route names ──────────────────────────────────────────────────────────────
 class AppRoutes {

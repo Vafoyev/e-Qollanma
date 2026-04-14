@@ -39,15 +39,6 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
     ),
   ];
 
-  void _next() {
-    if (_currentPage < _pages.length - 1) {
-      _pageCtrl.nextPage(
-        duration: const Duration(milliseconds: 350),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
-
   Future<void> _finish() async {
     await PrefsStorage.setOnboardDone();
     if (mounted) context.go(AppRoutes.login);
@@ -62,7 +53,6 @@ class _IntroScreenState extends ConsumerState<IntroScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final isLast = _currentPage == _pages.length - 1;
 
     return Scaffold(
       body: SafeArea(
