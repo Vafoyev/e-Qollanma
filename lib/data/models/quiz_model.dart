@@ -1,23 +1,37 @@
+import 'package:flutter/material.dart';
+
 // ── Quiz ──────────────────────────────────────────────────────────────────────
 class QuizModel {
   final String id;
   final String title;
   final bool isActive;
   final String createdAt;
+  final String category;
+  final int questionCount;
+  final IconData icon;
 
   const QuizModel({
     required this.id,
     required this.title,
     required this.isActive,
     required this.createdAt,
+    required this.category,
+    required this.questionCount,
+    required this.icon,
   });
 
-  factory QuizModel.fromJson(Map<String, dynamic> json) => QuizModel(
-    id:        json['id'] ?? '',
-    title:     json['title'] ?? '',
-    isActive:  json['is_active'] ?? true,
-    createdAt: json['created_at'] ?? '',
-  );
+  factory QuizModel.fromJson(Map<String, dynamic> json) {
+    // Icon mapping logic if needed from string
+    return QuizModel(
+      id:            json['id'] ?? '',
+      title:         json['title'] ?? '',
+      isActive:      json['is_active'] ?? true,
+      createdAt:     json['created_at'] ?? '',
+      category:      json['category'] ?? 'Umumiy',
+      questionCount: json['question_count'] ?? 0,
+      icon:          Icons.assignment_outlined, // Default icon
+    );
+  }
 }
 
 // ── Question ──────────────────────────────────────────────────────────────────
@@ -25,11 +39,13 @@ class QuestionModel {
   final String id;
   final String questionText;
   final List<Map<String, String>> options;
+  final String? imageUrl; // Savolga rasm qo'shish imkoniyati
 
   const QuestionModel({
     required this.id,
     required this.questionText,
     required this.options,
+    this.imageUrl,
   });
 
   factory QuestionModel.fromJson(Map<String, dynamic> json) {
@@ -44,10 +60,10 @@ class QuestionModel {
       id:           json['id'] ?? '',
       questionText: json['question_text'] ?? '',
       options:      opts,
+      imageUrl:     json['image_url'],
     );
   }
 
-  // [{"A": "Javob 1"}, {"B": "Javob 2"}] → [("A", "Javob 1"), ...]
   List<MapEntry<String, String>> get optionEntries {
     return options.expand((map) => map.entries).toList();
   }

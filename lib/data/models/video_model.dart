@@ -7,6 +7,9 @@ class VideoModel {
   final bool isYoutube;
   final String createdAt;
 
+  final String topic;
+  final String duration;
+
   const VideoModel({
     required this.id,
     required this.title,
@@ -15,6 +18,8 @@ class VideoModel {
     this.thumbnailUrl,
     required this.isYoutube,
     required this.createdAt,
+    required this.topic,
+    required this.duration,
   });
 
   factory VideoModel.fromJson(Map<String, dynamic> json) => VideoModel(
@@ -25,6 +30,8 @@ class VideoModel {
     thumbnailUrl: json['thumbnail_url'],
     isYoutube:    json['is_youtube'] ?? false,
     createdAt:    json['created_at'] ?? '',
+    topic:        json['topic'] ?? 'Umumiy',
+    duration:     json['duration'] ?? '0:00',
   );
 
   // YouTube video ID ni ajratish

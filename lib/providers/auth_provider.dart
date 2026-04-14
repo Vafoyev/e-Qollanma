@@ -63,6 +63,20 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
+  // API ni chetlab o'tish (Development uchun)
+  Future<void> devLogin() async {
+    state = state.copyWith(isLoading: true);
+    await Future.delayed(const Duration(milliseconds: 800));
+    final dummyUser = UserModel(
+      id: 'dev_123',
+      fullName: 'Mehmon foydalanuvchi',
+      phone: '998991234567',
+      role: 'student',
+      createdAt: DateTime.now().toIso8601String(),
+    );
+    state = state.copyWith(user: dummyUser, isLoading: false);
+  }
+
   Future<bool> register({
     required String fullName,
     required String phone,

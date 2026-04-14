@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/router/app_router.dart';
 import 'core/storage/prefs_storage.dart';
 import 'core/theme/app_theme.dart';
-import 'providers/locale_provider.dart';
 import 'providers/theme_provider.dart';
 
 void main() async {

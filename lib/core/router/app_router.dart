@@ -14,8 +14,9 @@ import '../../features/videos/video_detail_screen.dart';
 import '../../features/library/book_detail_screen.dart';
 import '../../features/quiz/quiz_screen.dart';
 import '../../features/quiz/quiz_result_screen.dart';
-import '../storage/prefs_storage.dart';
-import '../storage/secure_storage.dart';
+import '../../features/ai_assistant/ai_chat_screen.dart';
+import '../../features/profile/about_screen.dart';
+import '../../data/models/quiz_model.dart';
 
 // ── Route names ──────────────────────────────────────────────────────────────
 class AppRoutes {
@@ -31,6 +32,8 @@ class AppRoutes {
   static const bookDetail  = '/book/:id';
   static const quiz        = '/quiz/:id';
   static const quizResult  = '/quiz/:id/result';
+  static const aiChat      = '/ai-chat';
+  static const about       = '/about';
 }
 
 // ── Router provider ───────────────────────────────────────────────────────────
@@ -96,8 +99,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.quizResult,
         builder: (context, state) {
           final id = state.pathParameters['id']!;
-          return QuizResultScreen(quizId: id);
+          final result = state.extra as ResultModel?;
+          return QuizResultScreen(quizId: id, result: result);
         },
+      ),
+      GoRoute(
+        path: AppRoutes.aiChat,
+        builder: (_, __) => const AiChatScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.about,
+        builder: (_, __) => const AboutScreen(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

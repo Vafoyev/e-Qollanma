@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gap/gap.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
@@ -45,9 +46,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     } else {
       final err = ref.read(authProvider).error ?? 'error_unknown'.tr();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(err)),
+        SnackBar(content: Text(err), behavior: SnackBarBehavior.floating),
       );
     }
+  }
+
+  Future<void> _skip() async {
+    await ref.read(authProvider.notifier).devLogin();
+    if (mounted) context.go(AppRoutes.home);
   }
 
   @override
@@ -56,149 +62,125 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final isLoading = ref.watch(authProvider).isLoading;
 
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Gap(56),
-
-                // ── Logo / Icon ──────────────────────────────────────────
-                Container(
-                  width: 64,
-                  height: 64,
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryLight,
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  child: const Icon(
-                    Icons.architecture,
-                    color: AppColors.primary,
-                    size: 34,
-                  ),
-                ),
-
-                const Gap(24),
-
-                // ── Sarlavha ─────────────────────────────────────────────
-                Text(
-                  'login_title'.tr(),
-                  style: AppTextStyles.h1.copyWith(
-                    color: isDark
-                        ? AppColors.darkText
-                        : AppColors.lightText,
-                  ),
-                ),
-
-                const Gap(8),
-
-                Text(
-                  'login_subtitle'.tr(),
-                  style: AppTextStyles.body.copyWith(
-                    color: isDark
-                        ? AppColors.darkTextSub
-                        : AppColors.lightTextSub,
-                  ),
-                ),
-
-                const Gap(40),
-
-                // ── Telefon ───────────────────────────────────────────────
-                Text('login_phone'.tr(), style: AppTextStyles.label),
-                const Gap(8),
-                TextFormField(
-                  controller:    _phoneCtr,
-                  keyboardType:  TextInputType.phone,
-                  textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
-                    hintText:    'login_phone_hint'.tr(),
-                    prefixIcon:  const Icon(Icons.phone_outlined),
-                    prefixText:  '+',
-                  ),
-                  validator: AppValidators.phone,
-                ),
-
-                const Gap(20),
-
-                // ── Parol ─────────────────────────────────────────────────
-                Text('login_password'.tr(), style: AppTextStyles.label),
-                const Gap(8),
-                TextFormField(
-                  controller:     _passCtr,
-                  obscureText:    _obscure,
-                  textInputAction: TextInputAction.done,
-                  onFieldSubmitted: (_) => _submit(),
-                  decoration: InputDecoration(
-                    hintText:   'login_password_hint'.tr(),
-                    prefixIcon: const Icon(Icons.lock_outline),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscure
-                            ? Icons.visibility_off_outlined
-                            : Icons.visibility_outlined,
-                      ),
-                      onPressed: () =>
-                          setState(() => _obscure = !_obscure),
-                    ),
-                  ),
-                  validator: AppValidators.password,
-                ),
-
-                const Gap(32),
-
-                // ── Kirish tugmasi ────────────────────────────────────────
-                ElevatedButton(
-                  onPressed: isLoading ? null : _submit,
-                  child: isLoading
-                      ? const SizedBox(
-                    width: 22,
-                    height: 22,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2.5,
-                      color: Colors.white,
-                    ),
-                  )
-                      : Text('btn_login'.tr()),
-                ),
-
-                const Gap(24),
-
-                // ── Register havola ───────────────────────────────────────
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+      backgroundColor: isDark ? AppColors.darkBg : Colors.white,
+      body: Stack(
+        children: [
+          // Background Decor
+          Positioned(
+            top: -150,
+            right: -150,
+            child: CircleAvatar(radius: 200, backgroundColor: AppColors.primary.withValues(alpha: 0.05)),
+          ),
+          
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'login_no_account'.tr(),
-                      style: AppTextStyles.body.copyWith(
-                        color: isDark
-                            ? AppColors.darkTextSub
-                            : AppColors.lightTextSub,
+                    const Gap(20),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: TextButton(
+                        onPressed: _skip,
+                        child: const Text("O'tkazib yuborish"),
                       ),
                     ),
-                    const Gap(4),
-                    GestureDetector(
-                      onTap: () => context.go(AppRoutes.register),
-                      child: Text(
-                        'login_register_link'.tr(),
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          color: AppColors.primary,
-                          decoration: TextDecoration.underline,
-                          decorationColor: AppColors.primary,
+                    const Gap(32),
+                    // Logo
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                      child: const Icon(Iconsax.lock, color: AppColors.primary, size: 32),
+                    ),
+                    const Gap(32),
+                    Text(
+                      'login_title'.tr(),
+                      style: AppTextStyles.h1.copyWith(fontSize: 32),
+                    ),
+                    const Gap(8),
+                    Text(
+                      'login_subtitle'.tr(),
+                      style: AppTextStyles.body.copyWith(color: isDark ? Colors.white54 : Colors.black54),
+                    ),
+                    const Gap(48),
+
+                    // Inputs
+                    _buildLabel('login_phone'.tr()),
+                    const Gap(10),
+                    TextFormField(
+                      controller: _phoneCtr,
+                      keyboardType: TextInputType.phone,
+                      decoration: InputDecoration(
+                        hintText: 'login_phone_hint'.tr(),
+                        prefixIcon: const Icon(Iconsax.call, size: 20),
+                        prefixText: '+',
+                      ),
+                      validator: AppValidators.phone,
+                    ),
+
+                    const Gap(24),
+
+                    _buildLabel('login_password'.tr()),
+                    const Gap(10),
+                    TextFormField(
+                      controller: _passCtr,
+                      obscureText: _obscure,
+                      decoration: InputDecoration(
+                        hintText: 'login_password_hint'.tr(),
+                        prefixIcon: const Icon(Iconsax.key, size: 20),
+                        suffixIcon: IconButton(
+                          icon: Icon(_obscure ? Iconsax.eye_slash : Iconsax.eye, size: 20),
+                          onPressed: () => setState(() => _obscure = !_obscure),
                         ),
                       ),
+                      validator: AppValidators.password,
+                    ),
+
+                    const Gap(48),
+
+                    // Submit
+                    ElevatedButton(
+                      onPressed: isLoading ? null : _submit,
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(double.infinity, 60),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      ),
+                      child: isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : Text('btn_login'.tr()),
+                    ),
+
+                    const Gap(32),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('login_no_account'.tr(), style: AppTextStyles.small),
+                        TextButton(
+                          onPressed: () => context.push(AppRoutes.register),
+                          child: Text('login_register_link'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-
-                const Gap(32),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
+    );
+  }
+
+  Widget _buildLabel(String text) {
+    return Text(
+      text,
+      style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.5),
     );
   }
 }

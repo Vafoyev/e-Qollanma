@@ -81,7 +81,7 @@ class CurriculumScreen extends StatelessWidget {
                 Text(
                   '5 ta bo\'lim • 55+ mavzu • 55 ta test',
                   style: AppTextStyles.body.copyWith(
-                    color: Colors.white.withOpacity(0.85),
+                    color: Colors.white.withValues(alpha: 0.85),
                   ),
                 ),
               ],
