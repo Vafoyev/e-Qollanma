@@ -1,5 +1,5 @@
 name: e_qollanma
-description: E-Qo'llanma — Chizmachilik fani bo'yicha o'quv platformasi
+description: E-Qo'llanma.AI — Chizmachilik fani bo'yicha o'quv platformasi
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -77,3 +77,4 @@ flutter:
     - assets/animations/
     - assets/images/
     - assets/translations/
+    - assets/dgu.pdf

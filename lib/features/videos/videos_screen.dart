@@ -175,7 +175,7 @@ class _VideoCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: isDark ? 0.4 : 0.06),
+              color: Colors.black.withOpacity(isDark ? 0.4 : 0.06),
               blurRadius: 20,
               offset: const Offset(0, 10),
             ),

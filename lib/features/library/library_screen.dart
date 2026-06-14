@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -21,98 +22,116 @@ class LibraryScreen extends ConsumerWidget {
     final itemsAsync  = ref.watch(filteredLibraryListProvider);
     final allItems    = ref.watch(libraryListProvider);
 
-    return Scaffold(
-      backgroundColor: isDark ? AppColors.darkBg : AppColors.lightBg,
-      body: CustomScrollView(
-        slivers: [
-          // ── App Bar ──────────────────────────────────────────────────
-          SliverAppBar(
-            expandedHeight: 140,
-            floating: true,
-            pinned: true,
-            backgroundColor: isDark ? AppColors.darkSurface : AppColors.lightSurface,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Container(
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 60),
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  'library_title'.tr(),
-                  style: AppTextStyles.h2.copyWith(
-                    color: isDark ? AppColors.darkText : AppColors.lightText,
-                  ),
-                ),
-              ),
-            ),
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(60),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                child: _SearchBar(isDark: isDark, ref: ref),
-              ),
-            ),
-          ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bool isDesktop = constraints.maxWidth > 800;
+        // Desktopda ko'proq ustunlar, Mobilda 2 ta
+        final int crossAxisCount = isDesktop ? (constraints.maxWidth ~/ 200) : 2;
 
-          // ── Categories ────────────────────────────────────────────────
-          SliverToBoxAdapter(
-            child: allItems.when(
-              data: (items) {
-                final categories = ['Barchasi', ...items.map((i) => i.category).toSet()];
-                return _CategorySelector(categories: categories);
-              },
-              loading: () => const SizedBox(height: 60),
-              error: (_, __) => const SizedBox(),
-            ),
-          ),
-
-          // ── Items Grid/List ──────────────────────────────────────────
-          itemsAsync.when(
-            loading: () => SliverPadding(
-              padding: const EdgeInsets.all(16),
-              sliver: SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 16,
-                  crossAxisSpacing: 16,
-                  childAspectRatio: 0.65,
-                ),
-                delegate: SliverChildBuilderDelegate(
-                  (_, __) => _buildShimmer(isDark),
-                  childCount: 4,
-                ),
-              ),
-            ),
-            error: (e, _) => SliverFillRemaining(
-              child: _buildError(e.toString(), isDark),
-            ),
-            data: (items) {
-              if (items.isEmpty) {
-                return SliverFillRemaining(
-                  child: _buildEmpty(isDark),
-                );
-              }
-              return SliverPadding(
-                padding: const EdgeInsets.all(16),
-                sliver: SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 20,
-                    crossAxisSpacing: 16,
-                    childAspectRatio: 0.65,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (_, i) => _LibraryCard(
-                      item: items[i],
-                      isDark: isDark,
-                      onTap: () => context.push('/book/${items[i].id}'),
+        return Scaffold(
+          backgroundColor: Colors.transparent, // Desktopda MainScreen fonini ishlatish uchun
+          body: CustomScrollView(
+            slivers: [
+              // ── App Bar ──────────────────────────────────────────────────
+              SliverAppBar(
+                expandedHeight: isDesktop ? 80 : 140,
+                floating: true,
+                pinned: true,
+                elevation: 0,
+                backgroundColor: isDesktop ? Colors.transparent : (isDark ? AppColors.darkSurface : AppColors.lightSurface),
+                flexibleSpace: FlexibleSpaceBar(
+                  expandedTitleScale: 1.2,
+                  background: Container(
+                    padding: EdgeInsets.only(
+                      left: 20, 
+                      right: 20, 
+                      bottom: isDesktop ? 10 : 60
                     ),
-                    childCount: items.length,
+                    alignment: isDesktop ? Alignment.centerLeft : Alignment.bottomLeft,
+                    child: Text(
+                      'library_title'.tr(),
+                      style: AppTextStyles.h2.copyWith(
+                        fontSize: isDesktop ? 24 : 28,
+                        color: isDark ? AppColors.darkText : AppColors.lightText,
+                      ),
+                    ),
                   ),
                 ),
-              );
-            },
+                bottom: PreferredSize(
+                  preferredSize: const Size.fromHeight(60),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                    child: _SearchBar(isDark: isDark, ref: ref, isDesktop: isDesktop),
+                  ),
+                ),
+              ),
+
+              // ── Categories ────────────────────────────────────────────────
+              SliverToBoxAdapter(
+                child: allItems.when(
+                  data: (items) {
+                    final categories = ['Barchasi', ...items.map((i) => i.category).toSet()];
+                    return _CategorySelector(categories: categories);
+                  },
+                  loading: () => const SizedBox(height: 60),
+                  error: (_, __) => const SizedBox(),
+                ),
+              ),
+
+              const SliverGap(16),
+
+              // ── Items Grid ──────────────────────────────────────────
+              itemsAsync.when(
+                loading: () => SliverPadding(
+                  padding: const EdgeInsets.all(16),
+                  sliver: SliverGrid(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16,
+                      childAspectRatio: 0.68,
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                      (_, __) => _buildShimmer(isDark),
+                      childCount: 8,
+                    ),
+                  ),
+                ),
+                error: (e, _) => SliverFillRemaining(
+                  child: _buildError(e.toString(), isDark),
+                ),
+                data: (items) {
+                  if (items.isEmpty) {
+                    return SliverFillRemaining(
+                      child: _buildEmpty(isDark),
+                    );
+                  }
+                  return SliverPadding(
+                    padding: const EdgeInsets.all(20),
+                    sliver: SliverGrid(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: crossAxisCount,
+                        mainAxisSpacing: 24,
+                        crossAxisSpacing: 20,
+                        childAspectRatio: 0.68,
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (_, i) => _LibraryCard(
+                          item: items[i],
+                          isDark: isDark,
+                          onTap: () => context.push('/book/${items[i].id}'),
+                        ),
+                        childCount: items.length,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const SliverGap(100),
+            ],
           ),
-        ],
-      ),
+        );
+      }
     );
   }
 
@@ -152,20 +171,38 @@ class LibraryScreen extends ConsumerWidget {
 class _SearchBar extends StatelessWidget {
   final bool isDark;
   final WidgetRef ref;
-  const _SearchBar({required this.isDark, required this.ref});
+  final bool isDesktop;
+  const _SearchBar({required this.isDark, required this.ref, required this.isDesktop});
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      onChanged: (v) => ref.read(librarySearchQueryProvider.notifier).state = v,
-      decoration: InputDecoration(
-        hintText: 'library_search'.tr(),
-        prefixIcon: const Icon(Iconsax.search_normal),
-        fillColor: isDark ? AppColors.darkBg : AppColors.lightBg,
-        contentPadding: const EdgeInsets.symmetric(vertical: 12),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide.none,
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          if (!isDesktop)
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+        ],
+      ),
+      child: TextField(
+        onChanged: (v) => ref.read(librarySearchQueryProvider.notifier).state = v,
+        decoration: InputDecoration(
+          hintText: 'library_search'.tr(),
+          prefixIcon: const Icon(Iconsax.search_normal, size: 20),
+          fillColor: isDark ? AppColors.darkSurface2 : AppColors.lightSurface2,
+          filled: true,
+          contentPadding: const EdgeInsets.symmetric(vertical: 12),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide.none,
+          ),
         ),
       ),
     );
@@ -182,28 +219,37 @@ class _CategorySelector extends ConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return SizedBox(
-      height: 50,
+      height: 40,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         itemCount: categories.length,
         itemBuilder: (context, i) {
           final cat = categories[i];
           final isActive = selectedCategory == cat;
 
           return Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: ChoiceChip(
-              label: Text(cat),
-              selected: isActive,
-              onSelected: (_) => ref.read(selectedLibraryCategoryProvider.notifier).state = cat,
-              selectedColor: AppColors.primary,
-              labelStyle: AppTextStyles.small.copyWith(
-                color: isActive ? Colors.white : (isDark ? AppColors.darkTextSub : AppColors.lightTextSub),
+            padding: const EdgeInsets.only(right: 10),
+            child: InkWell(
+              onTap: () => ref.read(selectedLibraryCategoryProvider.notifier).state = cat,
+              borderRadius: BorderRadius.circular(20),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: isActive ? AppColors.primary : (isDark ? AppColors.darkSurface2 : AppColors.lightSurface2),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  cat,
+                  style: TextStyle(
+                    color: isActive ? Colors.white : (isDark ? Colors.white70 : Colors.black87),
+                    fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                    fontSize: 13,
+                  ),
+                ),
               ),
-              backgroundColor: isDark ? AppColors.darkSurface2 : AppColors.lightSurface2,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              showCheckmark: false,
             ),
           );
         },
@@ -221,19 +267,21 @@ class _LibraryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // ── Cover ──────────────────────────────────────────────────
           Expanded(
             child: Container(
+              width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.1),
+                    color: Colors.black.withOpacity(isDark ? 0.3 : 0.1),
                     blurRadius: 10,
                     offset: const Offset(0, 5),
                   ),
@@ -253,14 +301,13 @@ class _LibraryCard extends StatelessWidget {
                         child: const Icon(Iconsax.book, color: AppColors.primary, size: 40),
                       ),
                     ),
-                    // Type Badge
                     Positioned(
                       top: 10,
                       right: 10,
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.9),
+                          color: AppColors.primary.withOpacity(0.9),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
@@ -274,37 +321,50 @@ class _LibraryCard extends StatelessWidget {
               ),
             ),
           ),
-          const Gap(10),
+          const Gap(12),
           // ── Info ───────────────────────────────────────────────────
-          Text(
-            item.title,
-            style: AppTextStyles.h4.copyWith(
-              color: isDark ? AppColors.darkText : AppColors.lightText,
-              fontSize: 14,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.title,
+                  style: AppTextStyles.h4.copyWith(
+                    color: isDark ? AppColors.darkText : AppColors.lightText,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const Gap(2),
+                Text(
+                  item.author,
+                  style: AppTextStyles.small.copyWith(
+                    color: isDark ? AppColors.darkTextSub : AppColors.lightTextSub,
+                    fontSize: 12,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const Gap(6),
+                Row(
+                  children: [
+                    Icon(Iconsax.folder_2, size: 14, color: AppColors.primary),
+                    const Gap(6),
+                    Text(
+                      item.size,
+                      style: TextStyle(
+                        color: AppColors.primary,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const Gap(2),
-          Text(
-            item.author,
-            style: AppTextStyles.small.copyWith(
-              color: isDark ? AppColors.darkTextSub : AppColors.lightTextSub,
-              fontSize: 12,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const Gap(4),
-          Row(
-            children: [
-              Icon(Iconsax.folder_2, size: 14, color: AppColors.primary.withValues(alpha: 0.7)),
-              const Gap(4),
-              Text(
-                item.size,
-                style: AppTextStyles.caption.copyWith(color: AppColors.primary),
-              ),
-            ],
           ),
         ],
       ),
