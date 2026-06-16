@@ -67,7 +67,7 @@ class _DesktopLayout extends ConsumerWidget {
               height: 500,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.primary.withOpacity(isDark ? 0.05 : 0.08),
+                color: AppColors.primary.withValues(alpha: isDark ? 0.05 : 0.08),
               ),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 120, sigmaY: 120),
@@ -84,7 +84,7 @@ class _DesktopLayout extends ConsumerWidget {
               height: 400,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xFF1ABC9C).withOpacity(isDark ? 0.03 : 0.05),
+                color: const Color(0xFF1ABC9C).withValues(alpha: isDark ? 0.03 : 0.05),
               ),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
@@ -109,15 +109,15 @@ class _DesktopLayout extends ConsumerWidget {
                         margin: const EdgeInsets.fromLTRB(0, 0, 24, 24),
                         decoration: BoxDecoration(
                           color: isDark 
-                              ? AppColors.darkSurface.withOpacity(0.6) 
-                              : Colors.white.withOpacity(0.85),
+                              ? AppColors.darkSurface.withValues(alpha: 0.6) 
+                              : Colors.white.withValues(alpha: 0.85),
                           borderRadius: BorderRadius.circular(32),
                           border: Border.all(
-                            color: (isDark ? Colors.white : Colors.black).withOpacity(0.08),
+                            color: (isDark ? Colors.white : Colors.black).withValues(alpha: 0.08),
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(isDark ? 0.2 : 0.03),
+                              color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.03),
                               blurRadius: 40,
                               offset: const Offset(0, 20),
                             ),
@@ -191,7 +191,7 @@ class _DesktopTopBar extends ConsumerWidget {
               border: isDark ? Border.all(color: AppColors.darkBorder, width: 1) : null,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.02),
+                  color: Colors.black.withValues(alpha: 0.02),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
@@ -250,7 +250,7 @@ class _TopBarAction extends StatelessWidget {
           border: (!isPrimary && isDark) ? Border.all(color: AppColors.darkBorder, width: 1) : null,
           boxShadow: [
             if(!isPrimary) BoxShadow(
-              color: Colors.black.withOpacity(0.02),
+              color: Colors.black.withValues(alpha: 0.02),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -310,9 +310,9 @@ class _UltraPremiumNavbar extends StatelessWidget {
                 filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: (isDark ? const Color(0xFF1E293B) : Colors.white).withOpacity(0.8),
+                    color: (isDark ? const Color(0xFF1E293B) : Colors.white).withValues(alpha: 0.8),
                     borderRadius: BorderRadius.circular(30),
-                    border: Border.all(color: (isDark ? Colors.white : Colors.black).withOpacity(0.1)),
+                    border: Border.all(color: (isDark ? Colors.white : Colors.black).withValues(alpha: 0.1)),
                   ),
                   child: Row(
                     children: [
@@ -347,7 +347,7 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activeColor = AppColors.primary;
+    const activeColor = AppColors.primary;
     final idleColor = isDark ? Colors.white70 : Colors.black45;
     return Expanded(
       child: InkWell(

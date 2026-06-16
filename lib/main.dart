@@ -54,7 +54,7 @@ class EDrawGuideApp extends ConsumerWidget {
     final router = ref.watch(appRouterProvider);
 
     return MaterialApp.router(
-      title: 'E-Qo\'llanma.AI',
+      title: 'E-Darslik.AI',
       debugShowCheckedModeBanner: false,
 
       // Tema

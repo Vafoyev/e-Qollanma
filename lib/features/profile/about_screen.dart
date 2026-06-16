@@ -100,7 +100,7 @@ class AboutScreen extends StatelessWidget {
                   const Gap(12),
                   _buildBioCard(
                     "Isobek Vafoyev — texnologiyalar olamida katta tajribaga ega bo'lgan Full-Stack dasturchi. "
-                    "Ushbu 'e-Qollanma' loyihasi uning murakkab tizimlarni yuqori sifatda qura olish qobiliyatining isbotidir.",
+                    "Ushbu 'E-Darslik.AI' loyihasi uning murakkab tizimlarni yuqori sifatda qura olish qobiliyatining isbotidir.",
                     isDark,
                   ),
                   const Gap(32),
@@ -114,7 +114,7 @@ class AboutScreen extends StatelessWidget {
                   Center(
                     child: Column(
                       children: [
-                        Text("e-Qollanma v1.0.0", style: AppTextStyles.caption.copyWith(fontWeight: FontWeight.bold)),
+                        Text("E-Darslik.AI v1.0.0", style: AppTextStyles.caption.copyWith(fontWeight: FontWeight.bold)),
                         const Gap(4),
                         const Text("Made with ❤️ in Uzbekistan", style: TextStyle(fontSize: 12, color: Colors.grey)),
                       ],

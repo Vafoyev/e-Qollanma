@@ -66,7 +66,7 @@ class HomeScreen extends ConsumerWidget {
                       borderRadius: const BorderRadius.vertical(bottom: Radius.circular(40)),
                       boxShadow: [
                         if(!isDark) BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: Colors.black.withValues(alpha: 0.05),
                           blurRadius: 20,
                           offset: const Offset(0, 10),
                         ),
@@ -198,7 +198,7 @@ class HomeScreen extends ConsumerWidget {
                           return Container(
                             padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
-                              color: isDark ? AppColors.darkSurface2.withOpacity(0.4) : Colors.white,
+                              color: isDark ? AppColors.darkSurface2.withValues(alpha: 0.4) : Colors.white,
                               borderRadius: BorderRadius.circular(24),
                               border: Border.all(color: isDark ? AppColors.darkBorder : AppColors.lightBorder),
                             ),
@@ -275,7 +275,7 @@ class HomeScreen extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(32),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primary.withOpacity(isDark ? 0.15 : 0.3),
+                          color: AppColors.primary.withValues(alpha: isDark ? 0.15 : 0.3),
                           blurRadius: 20,
                           offset: const Offset(0, 10),
                         ),
@@ -327,9 +327,9 @@ class _QuickActionCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: color.withOpacity(isDark ? 0.15 : 0.1), 
+          color: color.withValues(alpha: isDark ? 0.15 : 0.1), 
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: color.withOpacity(isDark ? 0.3 : 0.2)),
+          border: Border.all(color: color.withValues(alpha: isDark ? 0.3 : 0.2)),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -340,7 +340,7 @@ class _QuickActionCard extends StatelessWidget {
                 color: color, 
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
-                  BoxShadow(color: color.withOpacity(0.4), blurRadius: 12, offset: const Offset(0, 6))
+                  BoxShadow(color: color.withValues(alpha: 0.4), blurRadius: 12, offset: const Offset(0, 6))
                 ],
               ),
               child: Icon(icon, color: Colors.white, size: 28),
@@ -351,7 +351,7 @@ class _QuickActionCard extends StatelessWidget {
                 label, 
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: isDark ? Colors.white.withOpacity(0.9) : color, 
+                  color: isDark ? Colors.white.withValues(alpha: 0.9) : color,
                   fontWeight: FontWeight.bold, 
                   fontSize: 14
                 ),

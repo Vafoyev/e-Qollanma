@@ -111,7 +111,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
               ),
               const Gap(32),
               Text(
-                'e-Qollanma',
+                'E-Darslik.AI',
                 style: AppTextStyles.h1.copyWith(
                   color: AppColors.primary,
                   fontSize: 36,

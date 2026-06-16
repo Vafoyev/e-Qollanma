@@ -1,5 +1,5 @@
 name: e_qollanma
-description: E-Qo'llanma.AI — Chizmachilik fani bo'yicha o'quv platformasi
+description: E-Darslik.AI — Chizmachilik fani bo'yicha o'quv platformasi
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -44,6 +44,7 @@ dependencies:
   shimmer: ^3.0.0
 
   # ── UI ────────────────────────────────────────────────────────
+  flutter_markdown: ^0.7.3
   flutter_svg: ^2.0.10+1
   gap: ^3.0.1
   iconsax: ^0.0.8
@@ -57,6 +58,9 @@ dependencies:
 
   # ── URL ───────────────────────────────────────────────────────
   url_launcher: ^6.3.0
+
+  # ── AI ────────────────────────────────────────────────────────
+  google_generative_ai: ^0.4.5
 
   # ── Connectivity ──────────────────────────────────────────────
   connectivity_plus: ^6.0.3

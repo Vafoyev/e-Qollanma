@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -181,7 +180,7 @@ class _SearchBar extends StatelessWidget {
         boxShadow: [
           if (!isDesktop)
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -281,7 +280,7 @@ class _LibraryCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(isDark ? 0.3 : 0.1),
+                    color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.1),
                     blurRadius: 10,
                     offset: const Offset(0, 5),
                   ),
@@ -307,7 +306,7 @@ class _LibraryCard extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.9),
+                          color: AppColors.primary.withValues(alpha: 0.9),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
@@ -351,11 +350,11 @@ class _LibraryCard extends StatelessWidget {
                 const Gap(6),
                 Row(
                   children: [
-                    Icon(Iconsax.folder_2, size: 14, color: AppColors.primary),
+                    const Icon(Iconsax.folder_2, size: 14, color: AppColors.primary),
                     const Gap(6),
                     Text(
                       item.size,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: AppColors.primary,
                         fontSize: 11,
                         fontWeight: FontWeight.w600,

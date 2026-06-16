@@ -1,7 +1,7 @@
 class AppStrings {
   AppStrings._();
 
-  static const String appName = 'e-Qollanma';
+  static const String appName = 'E-Darslik.AI';
 
   // Umumiy
   static const String welcome = 'Xush kelibsiz!';

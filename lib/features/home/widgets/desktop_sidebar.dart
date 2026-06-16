@@ -45,7 +45,7 @@ class DesktopSidebar extends StatelessWidget {
                 const SizedBox(width: 12),
                 const Expanded(
                   child: Text(
-                    'E-Qo\'llanma.AI',
+                    'E-Darslik.AI',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -144,7 +144,7 @@ class _SidebarItem extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
             color: isActive 
-              ? activeColor.withOpacity(0.1)
+              ? activeColor.withValues(alpha: 0.1)
               : Colors.transparent,
             borderRadius: BorderRadius.circular(12),
           ),
