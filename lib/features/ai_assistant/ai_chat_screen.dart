@@ -19,10 +19,10 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
   final ScrollController _scrollController = ScrollController();
   
   // ── AI SOZLAMALARI ──────────────────────────────────────────
-  static const String _apiKey = 'YOUR_API_KEY_HERE';
-  
   late final GenerativeModel _model;
   late final ChatSession _chat;
+  
+  String get _apiKey => const String.fromEnvironment('GEMINI_API_KEY', defaultValue: '');
 
   final List<_ChatMessage> _messages = [
     const _ChatMessage(
