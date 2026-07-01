@@ -58,7 +58,7 @@ class AppErrorWidget extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
+            const Icon(
               Iconsax.wifi_square,
               size: 56,
               color: AppColors.error,

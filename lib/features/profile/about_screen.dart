@@ -1,12 +1,35 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:path_provider/path_provider.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
+
+  Future<void> _launchDGU(BuildContext context) async {
+    try {
+      final ByteData data = await rootBundle.load('assets/dgu.pdf');
+      final List<int> bytes = data.buffer.asUint8List();
+      final Directory tempDir = await getTemporaryDirectory();
+      final File tempFile = File('${tempDir.path}/dgu_isobek.pdf');
+      await tempFile.writeAsBytes(bytes, flush: true);
+      final Uri url = Uri.file(tempFile.path);
+      if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+        throw Exception('Faylni ochib bo\'lmadi');
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('assets/dgu.pdf fayli topilmadi')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +101,6 @@ class AboutScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Patent va DGU bo'limi
                   _buildSectionTitle("Patent va Guvohnomalar", isDark),
                   const Gap(12),
                   _buildPatentCard(
@@ -86,6 +108,7 @@ class AboutScreen extends StatelessWidget {
                     number: "DGU 2024 0541",
                     date: "20.03.2024",
                     isDark: isDark,
+                    onTap: () => _launchDGU(context),
                   ),
                   const Gap(12),
                   _buildPatentCard(
@@ -93,6 +116,7 @@ class AboutScreen extends StatelessWidget {
                     number: "PAT №7741258",
                     date: "15.02.2024",
                     isDark: isDark,
+                    onTap: () => _launchDGU(context),
                   ),
                   const Gap(32),
 
@@ -100,7 +124,9 @@ class AboutScreen extends StatelessWidget {
                   const Gap(12),
                   _buildBioCard(
                     "Isobek Vafoyev — texnologiyalar olamida katta tajribaga ega bo'lgan Full-Stack dasturchi. "
-                    "Ushbu 'E-Darslik.AI' loyihasi uning murakkab tizimlarni yuqori sifatda qura olish qobiliyatining isbotidir.",
+                    "U nafaqat mobil (iOS va Android), balki Web texnologiyalari, Dart va zamonaviy backend tizimlari "
+                    "bo'yicha professional mahoratga ega. 'E-Darslik.AI' loyihasi uning murakkab tizimlarni "
+                    "yuqori sifatda qura olish qobiliyatining isbotidir.",
                     isDark,
                   ),
                   const Gap(32),
@@ -139,34 +165,38 @@ class AboutScreen extends StatelessWidget {
     return Text(title, style: AppTextStyles.h3.copyWith(fontSize: 20, color: isDark ? Colors.white : Colors.black));
   }
 
-  Widget _buildPatentCard({required String title, required String number, required String date, required bool isDark}) {
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.darkSurface : Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)),
-            child: const Icon(Iconsax.verify5, color: AppColors.primary, size: 24),
-          ),
-          const Gap(16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(title, style: AppTextStyles.bodyMedium.copyWith(fontSize: 14)),
-                const Gap(4),
-                Text(number, style: AppTextStyles.h4.copyWith(color: AppColors.primary, fontSize: 16)),
-                Text("Sana: $date", style: AppTextStyles.caption),
-              ],
+  Widget _buildPatentCard({required String title, required String number, required String date, required bool isDark, required VoidCallback onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.darkSurface : Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)),
+              child: const Icon(Iconsax.verify5, color: AppColors.primary, size: 24),
             ),
-          ),
-        ],
+            const Gap(16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: AppTextStyles.bodyMedium.copyWith(fontSize: 14)),
+                  const Gap(4),
+                  Text(number, style: AppTextStyles.h4.copyWith(color: AppColors.primary, fontSize: 16)),
+                  Text("Sana: $date", style: AppTextStyles.caption),
+                ],
+              ),
+            ),
+            const Icon(Iconsax.arrow_right_3, size: 16, color: AppColors.lightIcon),
+          ],
+        ),
       ),
     );
   }

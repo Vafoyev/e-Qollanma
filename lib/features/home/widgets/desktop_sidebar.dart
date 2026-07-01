@@ -94,6 +94,20 @@ class DesktopSidebar extends StatelessWidget {
             onTap: () => onItemSelected(4),
             isDark: isDark,
           ),
+          _SidebarItem(
+            icon: Iconsax.game,
+            label: "O'yinlar",
+            isActive: selectedIndex == 5,
+            onTap: () => onItemSelected(5),
+            isDark: isDark,
+          ),
+          _SidebarItem(
+            icon: Iconsax.message_circle,
+            label: 'AI Yordamchi',
+            isActive: selectedIndex == 6,
+            onTap: () => onItemSelected(6),
+            isDark: isDark,
+          ),
           
           const Spacer(),
           
@@ -131,7 +145,7 @@ class _SidebarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activeColor = AppColors.primary;
+    const activeColor = AppColors.primary;
     final idleColor = isDark ? AppColors.darkTextSub : AppColors.lightTextSub;
 
     return Padding(

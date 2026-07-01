@@ -11,6 +11,8 @@ import '../videos/videos_screen.dart';
 import '../library/library_screen.dart';
 import '../quiz/quiz_list_screen.dart';
 import '../profile/profile_screen.dart';
+import '../game/game_selector_screen.dart';
+import '../ai_assistant/ai_chat_screen.dart';
 import 'home_screen.dart';
 import 'widgets/desktop_sidebar.dart';
 
@@ -25,6 +27,8 @@ class MainScreen extends ConsumerWidget {
     LibraryScreen(),
     QuizListScreen(),
     ProfileScreen(),
+    GameSelectorScreen(),
+    AiChatScreen(),
   ];
 
   @override

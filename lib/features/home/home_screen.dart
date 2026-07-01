@@ -1,14 +1,9 @@
-import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gap/gap.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
@@ -19,27 +14,6 @@ import 'main_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
-
-  Future<void> _launchDGU(BuildContext context) async {
-    try {
-      final ByteData data = await rootBundle.load('assets/dgu.pdf');
-      final List<int> bytes = data.buffer.asUint8List();
-      final Directory tempDir = await getTemporaryDirectory();
-      final File tempFile = File('${tempDir.path}/dgu_qollanma.pdf');
-      await tempFile.writeAsBytes(bytes, flush: true);
-      final Uri url = Uri.file(tempFile.path);
-      if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
-        throw Exception('Faylni ochib bo\'lmadi');
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Xatolik: assets/dgu.pdf topilmadi yoki ochilmadi')),
-        );
-      }
-      debugPrint('DGU xatolik: $e');
-    }
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -156,12 +130,12 @@ class HomeScreen extends ConsumerWidget {
                           _QuickActionCard(label: 'Video', icon: Iconsax.video_play, color: const Color(0xFF4F46E5), onTap: () => ref.read(navIndexProvider.notifier).state = 1),
                           _QuickActionCard(label: 'Testlar', icon: Iconsax.task_square, color: const Color(0xFFF59E0B), onTap: () => ref.read(navIndexProvider.notifier).state = 3),
                           _QuickActionCard(label: 'Kitoblar', icon: Iconsax.book, color: const Color(0xFF10B981), onTap: () => ref.read(navIndexProvider.notifier).state = 2),
-                          _QuickActionCard(label: 'AI Yordamchi', icon: Iconsax.magic_star, color: const Color(0xFF8B5CF6), onTap: () => context.push(AppRoutes.aiChat)),
+                          _QuickActionCard(label: 'O\'yin', icon: Iconsax.game, color: const Color(0xFFEC4899), onTap: () => context.push(AppRoutes.game)),
                           _QuickActionCard(
-                            label: 'DGU', 
-                            icon: Iconsax.document_text5, 
-                            color: const Color(0xFF00BCD4), 
-                            onTap: () => _launchDGU(context),
+                            label: 'AI Yordamchi', 
+                            icon: Iconsax.magic_star, 
+                            color: const Color(0xFF8B5CF6), 
+                            onTap: () => context.push(AppRoutes.aiChat)
                           ),
                         ],
                       ),

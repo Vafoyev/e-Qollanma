@@ -35,8 +35,13 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
   @override
   void initState() {
     super.initState();
+    
+    if (_apiKey.isEmpty) {
+      debugPrint('ERROR: GEMINI_API_KEY environment variable not set!');
+    }
+    
     _model = GenerativeModel(
-      model: 'gemini-3.5-flash',
+      model: 'gemini-1.5-flash',
       apiKey: _apiKey,
       systemInstruction: Content.system(
         "Sening isming E-Darslik.AI yordamchisi. Sen chizmachilik va muhandislik grafikasi fani bo'yicha "

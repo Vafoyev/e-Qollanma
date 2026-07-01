@@ -16,6 +16,7 @@ import '../../features/quiz/quiz_screen.dart';
 import '../../features/quiz/quiz_result_screen.dart';
 import '../../features/ai_assistant/ai_chat_screen.dart';
 import '../../features/profile/about_screen.dart';
+import '../../features/game/game_screen.dart';
 import '../../data/models/quiz_model.dart';
 
 // ── Route names ──────────────────────────────────────────────────────────────
@@ -34,6 +35,7 @@ class AppRoutes {
   static const quizResult  = '/quiz/:id/result';
   static const aiChat      = '/ai-chat';
   static const about       = '/about';
+  static const game        = '/game';
 }
 
 // ── Router provider ───────────────────────────────────────────────────────────
@@ -110,6 +112,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.about,
         builder: (_, __) => const AboutScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.game,
+        builder: (_, __) => const GameScreen(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

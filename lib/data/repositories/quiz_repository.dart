@@ -1,35 +1,28 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/quiz_model.dart';
-import '../../core/network/dio_client.dart';
-import '../../core/constants/api_endpoints.dart';
 
 class QuizRepository {
-  final Dio _dio;
-  QuizRepository(this._dio);
+  QuizRepository();
 
   // Faol testlar ro'yxati
   Future<List<QuizModel>> getQuizzes() async {
-    try {
-      // Real API ga so'rov (Hozircha error bo'lsa mock data qaytarish uchun try-catch ichida)
-      // final res  = await _dio.get(ApiEndpoints.quizzes);
-      // ...
-      throw DioException(requestOptions: RequestOptions(path: ApiEndpoints.quizzes));
-    } catch (e) {
-      // Mock data provider orqali keladi, bu yerda faqat metod strukturasi uchun
-      rethrow;
-    }
+    // Real API ga so'rov (Hozircha mock data qaytarish uchun)
+    // final res  = await _dio.get(ApiEndpoints.quizzes);
+    // return (res.data as List).map((e) => QuizModel.fromJson(e)).toList();
+    
+    // Mock data — server tayyor bo'lganda API ga almashtiriladi
+    return [];
   }
 
   // Savollari (to'g'ri javobsiz)
   Future<List<QuestionModel>> getQuizQuestions(String quizId) async {
-    try {
-      // final res  = await _dio.get(ApiEndpoints.quizById(quizId));
-      throw DioException(requestOptions: RequestOptions(path: ''));
-    } catch (e) {
-      rethrow;
-    }
+    // Real API ga so'rov
+    // final res  = await _dio.get(ApiEndpoints.quizById(quizId));
+    // return (res.data as List).map((e) => QuestionModel.fromJson(e)).toList();
+    
+    // Mock data
+    return [];
   }
 
   // Testni topshirish
@@ -59,5 +52,5 @@ class QuizRepository {
 }
 
 final quizRepositoryProvider = Provider<QuizRepository>((ref) {
-  return QuizRepository(ref.watch(dioProvider));
+  return QuizRepository();
 });

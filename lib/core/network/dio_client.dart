@@ -5,7 +5,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'api_interceptor.dart';
 
 const String _baseUrl =
-    'https://e-drawguide-api.example.com/api/v1'; // TODO: Haqiqiy server domenini kiriting
+    String.fromEnvironment('API_BASE_URL', defaultValue: 'https://api.e-qollanma.uz/api/v1');
 
 class DioClient {
   DioClient._();
